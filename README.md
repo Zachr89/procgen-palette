@@ -1,121 +1,118 @@
 # procgen-palette
 
-A browser-based Wave Function Collapse editor that bridges the gap between algorithm theory and practical game development.
+**Visual WFC editor for game developers—design tilesets, paint constraints, export instantly.**
 
 ## What is this?
 
-procgen-palette is a real-time tileset designer and constraint editor for the Wave Function Collapse algorithm. It lets indie game developers create procedurally generated levels visually—no research papers required. Design tiles, paint adjacency rules, and instantly export working implementations to Unity or other engines.
+procgen-palette is a browser-based Wave Function Collapse (WFC) editor that bridges the gap between procedural generation theory and practical implementation. It lets you visually design tilesets, define adjacency rules through intuitive constraint painting, and see results in real-time. No research papers required—just draw, configure, and export directly to Unity, Godot, or JSON.
+
+Built for indie game developers who want powerful algorithm tooling without the academic overhead. The recent surge in WFC tutorials revealed a clear need: developers understand the theory but struggle with practical implementation. This tool solves that.
 
 ## Features
 
-- **Visual Tile Editor** – Draw tiles pixel-by-pixel with a built-in sprite editor
-- **Constraint Painting** – Intuitively define which tiles can connect by clicking, not coding
-- **Real-time Preview** – Watch your ruleset generate levels as you edit constraints
-- **Instant Export** – One-click export to Unity packages, JSON, or custom formats
-- **Sample Palettes** – Pre-built tilesets (Ocean, Forest, Cyberpunk, Desert, Sunset) to learn from
-- **Zero Config** – Runs entirely in the browser, no installation or build process
+- **Visual Tile Editor** – Draw tiles directly in-browser with a built-in pixel editor
+- **Constraint Painting** – Define adjacency rules by clicking tile edges (no manual JSON editing)
+- **Real-time Preview** – Watch WFC generate outputs as you modify constraints
+- **Instant Export** – One-click export to Unity packages, Godot scenes, or JSON data
+- **Pre-built Sample Palettes** – Ocean, Forest, Desert, Cyberpunk, and Sunset themes included
+- **Unity Integration** – Drop-in package with ScriptableObjects and editor windows
+- **No Installation** – Runs entirely in your browser (or self-host with Docker)
 
 ## Quick Start
 
-### Web Editor
+### Web Version (Fastest)
+
+1. Open [procgen-palette.dev](#) in your browser
+2. Click "New Tileset" or load a sample palette (Forest, Ocean, etc.)
+3. Draw tiles in the Tile Editor
+4. Click tile edges to define adjacency rules
+5. Hit "Generate" to see WFC output
+6. Export to your game engine
+
+### Self-Hosted
 
 ```bash
-# Clone the repository
 git clone https://github.com/yourusername/procgen-palette.git
 cd procgen-palette
-
-# Install dependencies
 npm install
-
-# Run the development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) and start designing.
+Open `http://localhost:3000` in your browser.
 
-### Unity Integration
+### Unity Package
 
 ```bash
-# Import the Unity package
-1. Download the latest release from the Releases page
-2. In Unity: Assets > Import Package > Custom Package
-3. Select procgen-palette.unitypackage
-4. Import all files
+# Copy the unity-package folder into your Unity project's Packages directory
+cp -r unity-package /path/to/YourProject/Packages/com.procgen.palette
+
+# Or install via Package Manager:
+# Window → Package Manager → + → Add package from disk
+# Select unity-package/package.json
 ```
 
-See `unity-package/INSTALL.md` for detailed integration instructions.
+See [`unity-package/INSTALL.md`](unity-package/INSTALL.md) for detailed Unity setup instructions.
 
 ## Usage
 
-### Creating a Tileset
+### 1. Design Your Tileset
 
-1. **Design Tiles** – Use the tile editor to create your sprite atlas
-2. **Paint Constraints** – Click tile pairs to mark valid adjacencies (up/down/left/right)
-3. **Test Generation** – Watch the output canvas generate levels in real-time
-4. **Refine Rules** – Adjust constraints until you get the variety/coherence you want
-5. **Export** – Download as Unity ScriptableObject, JSON, or PNG tileset
+Use the Tile Editor to create individual tiles (grass, water, walls, etc.). Each tile is a small sprite (typically 16x16 or 32x32 pixels).
 
-### Using in Unity
+### 2. Define Constraints
+
+Click the edges of tiles in the Constraints Panel to specify which tiles can appear adjacent to each other:
+
+- **Green edge** = Compatible connection
+- **Red edge** = Forbidden connection
+- **Gray edge** = No rule defined (WFC treats as incompatible)
+
+### 3. Generate Output
+
+Adjust grid size, click "Generate," and watch WFC produce a tilemap that respects your constraints. Regenerate as many times as you want—each output is unique.
+
+### 4. Export
+
+**Unity**: Exports a `.unitypackage` with PaletteSO assets and generator scripts  
+**Godot**: Exports a `.tscn` TileMap scene with configured tiles  
+**JSON**: Raw tileset + constraints data for custom integrations
+
+### Unity Runtime Example
 
 ```csharp
 using ProcGenPalette;
 
-public class LevelGenerator : MonoBehaviour
-{
-    [SerializeField] private PaletteSO palette;
+public class MapGenerator : MonoBehaviour {
+    public PaletteSO palette;
     
-    void Start()
-    {
-        var generator = new PaletteGenerator(palette);
-        int[,] output = generator.Generate(width: 20, height: 20);
+    void Start() {
+        int[,] grid = PaletteGenerator.Generate(palette, width: 50, height: 50);
         
-        // Use output array to instantiate prefabs
-        RenderLevel(output);
+        // grid[x,y] contains tile IDs
+        // Render with TilemapRenderer or instantiate prefabs
     }
 }
 ```
 
-### Loading Sample Palettes
-
-Sample palettes are included in `unity-package/Samples~/`:
-- **Ocean.asset** – Isometric water/beach tiles
-- **Forest.asset** – Top-down woodland paths
-- **Cyberpunk.asset** – Neon city blocks
-- **Desert.asset** – Sandy dunes and oasis
-- **Sunset.asset** – Atmospheric sky gradients
-
-Import samples via Unity Package Manager > procgen-palette > Samples.
-
 ## Tech Stack
 
-**Web Editor:**
-- Next.js 14 (App Router)
-- TypeScript
-- Zustand (state management)
-- Tailwind CSS
-- Canvas API (tile rendering)
+- **Frontend**: Next.js 14, React, TypeScript, Tailwind CSS
+- **State Management**: Zustand
+- **Canvas Rendering**: HTML5 Canvas API
+- **WFC Algorithm**: Custom TypeScript implementation (`lib/wfc.ts`)
+- **Unity Integration**: C# ScriptableObjects with custom Editor windows
 
-**Unity Package:**
-- C# (Unity 2021.3+)
-- ScriptableObjects (data persistence)
-- Custom Editor Windows
+## Why This Exists
 
-**Algorithm:**
-- Wave Function Collapse (constraint propagation)
-- Backtracking solver with entropy heuristics
+After Wave Function Collapse tutorials went viral (again), dozens of developers asked: *"How do I actually use this in my game?"* Existing tools were either academic prototypes or buried in game engine plugins with poor UX.
 
-## Export Formats
-
-- **Unity Package** – Complete ScriptableObject with runtime generator
-- **JSON** – Portable tileset + constraint data for any engine
-- **PNG Spritesheet** – Combined tile atlas with metadata
-- **Godot** *(coming soon)* – GDScript export format
+procgen-palette makes WFC accessible: visual constraint definition, instant feedback, zero setup, and engine-ready exports. If you can draw tiles and click edges, you can generate infinite procedural levels.
 
 ## License
 
-MIT License - see LICENSE file for details.
+MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-**Built for game developers who want accessible procedural generation tools.**  
-Found this useful? Star the repo and share your generated levels! 🎮✨
+**Maintained by developers who ship games, not papers.**  
+Contributions welcome · [Issues](https://github.com/yourusername/procgen-palette/issues) · [Discussions](https://github.com/yourusername/procgen-palette/discussions)
