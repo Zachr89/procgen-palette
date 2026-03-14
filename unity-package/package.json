@@ -1,0 +1,25 @@
+{
+  "name": "com.procgenpalette.unity",
+  "version": "1.0.0",
+  "displayName": "ProcGen Palette",
+  "description": "Procedural color palette generation for Unity. Generate harmonious color schemes with multiple algorithms and use them directly in your projects.",
+  "unity": "2020.3",
+  "keywords": [
+    "procedural",
+    "palette",
+    "color",
+    "generation",
+    "tool"
+  ],
+  "author": {
+    "name": "ProcGen Palette",
+    "url": "https://github.com/yourusername/procgen-palette"
+  },
+  "samples": [
+    {
+      "displayName": "Example Palettes",
+      "description": "Five pre-configured color palettes (Ocean, Forest, Sunset, Cyberpunk, Desert)",
+      "path": "Samples~"
+    }
+  ]
+}

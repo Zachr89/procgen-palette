@@ -1,0 +1,14 @@
+{
+    "name": "ProcGenPalette.Runtime",
+    "rootNamespace": "ProcGenPalette",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

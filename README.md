@@ -1,99 +1,99 @@
 # procgen-palette
 
-**Visual Wave Function Collapse editor for game developers**
+**Wave Function Collapse editor that actually ships to game engines.**
 
 ## What is this?
 
-procgen-palette is a browser-based tool that makes Wave Function Collapse accessible to indie game developers. Design tilesets, paint adjacency constraints visually, and watch your procedural patterns generate in real-time. Export directly to Unity, Godot, or PNG—no research papers required.
+procgen-palette bridges the gap between WFC theory and practical game development. Design tilesets, paint adjacency constraints, and generate procedural levels in real-time—all in your browser. Export directly to Unity, Godot, or JSON with zero friction. Built for indie devs who want accessible procgen tooling without drowning in research papers.
 
 ## Features
 
-- **Visual Tileset Editor** – Draw tiles directly in the browser with an intuitive pixel editor
-- **Constraint Painting** – Define which tiles can be adjacent by clicking, not coding
-- **Real-Time Generation** – Watch WFC solve your patterns instantly with adjustable parameters
-- **Multi-Format Export** – One-click export to Unity Tilemap JSON, Godot TileMap, or PNG spritesheets
-- **Seed Control** – Reproducible generation for debugging and refinement
-- **Responsive Canvas** – Adjustable output grid size for testing different map dimensions
+- **Visual Tileset Editor** – Draw tiles pixel-by-pixel or import spritesheets
+- **Constraint Painting** – Click to define which tiles can neighbor each other
+- **Real-Time Preview** – See WFC generation results instantly as you edit
+- **Multi-Engine Export** – One-click export to Unity package, Godot scenes, or raw JSON
+- **Sample Palettes** – Ocean, Forest, Sunset, Cyberpunk, and Desert presets included
+- **Unity Integration** – Full editor window with ScriptableObject workflow
+- **Browser-Based** – No installation, works offline, runs everywhere
 
 ## Quick Start
 
-### Installation
+### Web Editor
 
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/procgen-palette.git
-cd procgen-palette
-
-# Install dependencies
 npm install
-
-# Run development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+Open [http://localhost:3000](http://localhost:3000) and start designing.
 
-### Building for Production
+### Unity Package
 
-```bash
-npm run build
-npm start
-```
+1. Download the latest `.unitypackage` from [Releases](#)
+2. Import into Unity (Assets → Import Package → Custom Package)
+3. Open editor: `Tools → ProcGen Palette → Editor Window`
+4. Load a sample palette or create your own
+5. Hit **Generate** to spawn levels in your scene
+
+Full Unity setup: [unity-package/INSTALL.md](unity-package/INSTALL.md)
 
 ## Usage
 
-1. **Create Tiles** – Use the tile editor to design your tileset (terrain, walls, floors, etc.)
-2. **Set Constraints** – Click tile pairs in the constraints panel to define valid adjacencies
-3. **Generate** – Hit "Generate" to run the WFC algorithm and see results on the output canvas
-4. **Refine** – Adjust tile weights, tweak constraints, or change the seed until you're satisfied
-5. **Export** – Choose your target engine and download ready-to-use game assets
+### Creating a Tileset
 
-### Example Workflow
+1. Click **Add Tile** in the Tileset Panel
+2. Use the Tile Editor to draw your tile (or paste from clipboard)
+3. Repeat for all tile variants (floor, wall, corners, etc.)
 
-```typescript
-// The WFC solver runs automatically when you:
-// - Modify constraints
-// - Change tile weights
-// - Click "Generate" with a new seed
+### Defining Constraints
 
-// Export formats supported:
-// - Unity: Tilemap JSON with tile references
-// - Godot: TileMap resource format
-// - PNG: Combined spritesheet with metadata
-```
+1. Select a tile from the Tileset Panel
+2. In the Constraints Panel, click neighbor slots to allow/disallow adjacent tiles
+3. Use directional toggles (↑ ↓ ← →) to set per-edge rules
+
+### Generating Levels
+
+1. Set output dimensions in the Control Panel
+2. Click **Generate** to run WFC algorithm
+3. Adjust seed or constraints and regenerate instantly
+
+### Exporting
+
+**Unity:**
+- Click **Export → Unity Package**
+- Import `.unitypackage` into your project
+- Use `PaletteGenerator.Generate()` at runtime
+
+**Godot:**
+- Export → Godot Scene (`.tscn`)
+- Drag into your project and instantiate
+
+**JSON:**
+- Export → JSON for custom integrations
 
 ## Tech Stack
 
-- **Framework**: Next.js 14 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **State Management**: Zustand
-- **Canvas Rendering**: HTML5 Canvas API
-- **Algorithm**: Wave Function Collapse (custom implementation)
+**Frontend:**
+- Next.js 14 (App Router)
+- TypeScript
+- Tailwind CSS
+- Zustand (state management)
 
-## Project Structure
+**Algorithm:**
+- Custom WFC implementation with entropy-based tile selection
+- Backtracking for constraint resolution
 
-```
-procgen-palette/
-├── app/              # Next.js app router pages
-├── components/       # React components
-│   ├── WFCEditor.tsx
-│   ├── TilesetPanel.tsx
-│   ├── TileEditor.tsx
-│   ├── ConstraintsPanel.tsx
-│   ├── OutputCanvas.tsx
-│   ├── ControlPanel.tsx
-│   └── ExportPanel.tsx
-├── lib/
-│   ├── store.ts      # Zustand state management
-│   └── wfc.ts        # WFC algorithm implementation
-└── public/           # Static assets
-```
+**Unity Integration:**
+- C# runtime + editor scripts
+- ScriptableObject architecture
+- Assembly definitions for clean dependency management
 
 ## License
 
-MIT License - see LICENSE file for details.
+MIT License - see [LICENSE](LICENSE) for details.
 
 ---
 
-**Built for indie devs who want procgen power without the PhD.**
+**Contributing:** Issues and PRs welcome. See [OVERVIEW.md](OVERVIEW.md) for architecture details.
+
+**Support:** Star the repo if this saved you time. Share with devs who need better procgen tools.
